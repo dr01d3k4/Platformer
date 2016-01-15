@@ -6,6 +6,7 @@
 #include "engine/EntityManager.h"
 #include "engine/Component.h"
 #include "component/PositionComponent.h"
+#include "component/MovementComponent.h"
 
 // https://github.com/SFML/SFML/wiki/Tutorial%3A-Build-your-SFML-project-with-CMake
 // TODO: Use namespaces
@@ -93,6 +94,15 @@ int createEntity(EntityManager& entityManager) {
 }
 
 
+void printEntitySet(std::set<int>& entities) {
+	std::cout << "{";
+	for (int entity : entities){
+		std::cout << entity << ", ";
+	}
+	std::cout << "}" << std::endl;
+}
+
+
 int main() {
 	sf::RenderWindow window{sf::VideoMode{windowWidth, windowHeight},
 		windowTitle};
@@ -123,12 +133,16 @@ int main() {
 	PositionComponent* playerPositionComponent = static_cast<PositionComponent*>(entityManager.getComponent(playerId, PositionComponentType));
 	if (playerPositionComponent != nullptr) {
 		std::cout << "Position: (" << playerPositionComponent->_position.x << ", " << playerPositionComponent->_position.y << ")" << std::endl;
+
+		playerPositionComponent->_position += sf::Vector2f(45, 20);
+		std::cout << "Added to position" << std::endl;
+		std::cout << "Position: (" << playerPositionComponent->_position.x << ", " << playerPositionComponent->_position.y << ")" << std::endl;
 	} else {
 		std::cout << "Player has no position component" << std::endl;
 	}
 
 	std::cout << std::endl;
-	std::cout << "Getting Enemy position" << std::endl;
+	std::cout << "Getting enemy position" << std::endl;
 	PositionComponent* enemyPositionComponent = static_cast<PositionComponent*>(entityManager.getComponent(enemyId, PositionComponentType));
 	if (enemyPositionComponent != nullptr) {
 		std::cout << "Position: (" << enemyPositionComponent->_position.x << ", " << enemyPositionComponent->_position.y << ")" << std::endl;
@@ -136,20 +150,35 @@ int main() {
 		std::cout << "Enemy has no position" << std::endl;
 	}
 
-	// int enemyId = entityManager.createEntity();
+	std::cout << std::endl;
+	std::cout << "Adding movement component to player" << std::endl;
+	entityManager.addComponent(playerId, new MovementComponent{sf::Vector2f(24, -9)});
 
-	// std::cout << "" << std::endl;
-	// PositionComponent playerPosition{sf::Vector2f{0, 0}};
-	// PositionComponent enemyPosition{sf::Vector2f{10, 10}};
+	for (int i = 0; i < 13; i += 1) {
+		int id = entityManager.createEntity();
+		if (id % 2 == 0) {
+			entityManager.addComponent(id, new PositionComponent{sf::Vector2f(id, i)});
+		}
+		if (id % 3 == 0) {
+			entityManager.addComponent(id, new MovementComponent{sf::Vector2f(id, i)});
+		}
+	}
 
-	// std::cout << "" << std::endl;
-	// entityManager.addComponent(playerId, playerPosition);
-	// std::cout << "" << std::endl;
-	// entityManager.addComponent(enemyId, enemyPosition);
+	std::cout << std::endl;
+	std::cout << "Getting all entities with position component" << std::endl;
+	std::set<int> positionEntities = entityManager.getEntitiesWithComponent(PositionComponentType);
+	printEntitySet(positionEntities);
 
-	// Component&& playerPosition = entityManager.addComponent(playerId, PositionComponent{sf::Vector2f{0, 0}});
-	// std::cout << "" << std::endl;
-	// Component&& enemyPosition = entityManager.addComponent(enemyId, PositionComponent{sf::Vector2f{0, 0}});
+	std::cout << std::endl;
+	std::cout << "Getting all entities with movement component" << std::endl;
+	std::set<int> movementEntities = entityManager.getEntitiesWithComponent(MovementComponentType);
+	printEntitySet(movementEntities);
+
+
+	std::cout << std::endl;
+	std::cout << "Getting all entities with position and movement component" << std::endl;
+	std::set<int> positionMovementEntities = entityManager.getEntitiesWithComponents({PositionComponentType, MovementComponentType});
+	printEntitySet(positionMovementEntities);
 
 	sf::Clock clock;
 
