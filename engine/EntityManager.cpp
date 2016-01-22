@@ -21,9 +21,9 @@ int EntityManager::createEntity() {
 
 
 void EntityManager::addComponent(int entity, Component* component) {
-	std::cout << "Adding component" << std::endl;
+	// std::cout << "Adding component" << std::endl;
 	ComponentType componentType = component->getType();
-	std::cout << "Component type: " << componentType << "; " << componentTypeToString(componentType) << std::endl;
+	// std::cout << "Component type: " << componentType << "; " << componentTypeToString(componentType) << std::endl;
 
 	_componentsMap[componentType][entity] = std::unique_ptr<Component>(component);
 }

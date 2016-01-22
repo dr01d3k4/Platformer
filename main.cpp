@@ -110,6 +110,7 @@ int main() {
 
 	Game game{window};
 
+
 	sf::Clock clock;
 	sf::View view{sf::FloatRect{0, 0, windowWidth, windowHeight}};
 
@@ -118,6 +119,9 @@ int main() {
 		running = handleEvents(window, view);
 
 		sf::Time elapsed = clock.restart();
+
+		game.update(elapsed);
+		break;
 
 		updateView(view, elapsed);
 
