@@ -4,5 +4,5 @@ bin
 obj
 cb.bmp
 *.cbp
-.save
-.depend
+*.save
+*.depend
