@@ -7,6 +7,8 @@ std::string componentTypeToString(ComponentType componentType) {
 			return "PositionComponentType";
 		case MovementComponentType:
 			return "MovementComponentType";
+		default:
+			return "";
 	}
 	return "";
 }

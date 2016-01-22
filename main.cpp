@@ -109,7 +109,7 @@ int main() {
 		windowTitle};
 
 	Game game{window};
-
+	game.initEntities();
 
 	sf::Clock clock;
 	sf::View view{sf::FloatRect{0, 0, windowWidth, windowHeight}};

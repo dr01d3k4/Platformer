@@ -7,6 +7,8 @@ std::string systemTypeToString(SystemType systemType) {
 			return "RenderSystemType";
 		case MovementSystemType:
 			return "MovementSystemType";
+		default:
+			return "";
 	}
 	return "";
 }

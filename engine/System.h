@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-
 class Game;
 
 enum SystemType {
@@ -21,6 +20,11 @@ public:
 	virtual void update(sf::Time deltaTime) = 0;
 
 	virtual SystemType getType() const = 0;
+
+	// EntityManager& getEntityManager() {
+	// 	return _game.getEntityManager();
+	// }
+
 protected:
 	const Game& _game;
 };
